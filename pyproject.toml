@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "pre-commit-msg-gen"
+version = "0.1.0"
+description = "A tool for generating pre-commit messages"
+authors = ["Richard Tuin <richardtuin@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "pre_commit_msg_gen"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^1.54.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pylint = "^3.3.1"
+flake8 = "^7.1.1"
+
+[tool.poetry.scripts]
+pre-commit-msg-gen = "pre_commit_msg_gen.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 120
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist"
+]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0111",  # missing-docstring
+    "R0903"   # too-few-public-methods
+]
+
+[tool.pylint.format]
+max-line-length = 120
