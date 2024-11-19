@@ -15,6 +15,7 @@ openai = "^1.54.5"
 pytest = "^8.3.3"
 pylint = "^3.3.1"
 flake8 = "^7.1.1"
+pytest-cov = "^6.0.0"
 
 [tool.poetry.scripts]
 prepare-commit-msg-gen = "prepare_commit_msg_gen.cli:main"
