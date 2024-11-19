@@ -77,8 +77,6 @@ def main():
     with open(commit_msg_file, 'w') as f:
         f.write(commit_message)
 
-    print(f"Pre-commit message\n----------------\n{commit_message}")
-
     return 0
 
 if __name__ == "__main__":
