@@ -6,12 +6,14 @@ from prepare_commit_msg_gen.cli import get_staged_diff, generate_commit_message,
 
 @pytest.fixture
 def mock_openai_client():
-    with patch('prepare_commit_msg_gen.cli.client') as mock_client:
-        mock_completion = MagicMock()
-        mock_completion.choices = [
-            MagicMock(message=MagicMock(content="feat(auth): add user authentication"))
-        ]
-        mock_client.chat.completions.create.return_value = mock_completion
+    mock_client = MagicMock()
+    mock_completion = MagicMock()
+    mock_completion.choices = [
+        MagicMock(message=MagicMock(content="feat(auth): add user authentication"))
+    ]
+    mock_client.chat.completions.create.return_value = mock_completion
+    
+    with patch('prepare_commit_msg_gen.cli.get_openai_client', return_value=mock_client):
         yield mock_client
 
 @pytest.fixture

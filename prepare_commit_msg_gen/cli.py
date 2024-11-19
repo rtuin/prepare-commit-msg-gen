@@ -4,7 +4,8 @@ import os
 import subprocess
 from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def get_openai_client():
+    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_staged_diff():
     result = subprocess.run(['git', 'diff', '--cached'], stdout=subprocess.PIPE)
@@ -39,6 +40,7 @@ Diff:
     """
 
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model='gpt-4o',
             messages=[
