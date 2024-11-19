@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "pre-commit-msg-gen"
+name = "prepare-commit-msg-gen"
 version = "0.1.0"
-description = "A tool for generating pre-commit messages"
+description = "A tool for generating commit messages"
 authors = ["Richard Tuin <richardtuin@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "pre_commit_msg_gen"}]
+packages = [{include = "prepare_commit_msg_gen"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -17,7 +17,7 @@ pylint = "^3.3.1"
 flake8 = "^7.1.1"
 
 [tool.poetry.scripts]
-pre-commit-msg-gen = "pre_commit_msg_gen.cli:main"
+prepare-commit-msg-gen = "prepare_commit_msg_gen.cli:main"
 
 [build-system]
 requires = ["poetry-core"]

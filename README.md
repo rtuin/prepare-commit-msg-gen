@@ -1,4 +1,4 @@
-# Pre-Commit Message Generator
+# Git Commit Message Generator
 
 A tool that helps generate meaningful commit messages for your Git repositories using LLMs.
 
@@ -8,7 +8,7 @@ A tool that helps generate meaningful commit messages for your Git repositories 
 You can install this package using pip:
 
 ```bash
-pip install pre-commit-msg-gen
+pip install prepare-commit-msg-gen
 ```
 
 ### Local Development Installation
@@ -16,8 +16,8 @@ To install the package locally for development:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/rtuin/pre-commit-msg-gen.git
-   cd pre-commit-msg-gen
+   git clone https://github.com/rtuin/prepare-commit-msg-gen.git
+   cd prepare-commit-msg-gen
    ```
 
 2. Install Poetry if you haven't already: https://python-poetry.org/docs/#installation
@@ -32,7 +32,7 @@ To install the package locally for development:
 4. Test the package:
    ```bash
    touch test-message.txt
-   pre-commit-msg-gen test-message.txt
+   prepare-commit-msg-gen test-message.txt
    ```
 
 
@@ -49,7 +49,7 @@ After installing the package, you need to set up the pre-commit hook in your Git
    ```bash
    mkdir -p .git/hooks
    echo '#!/bin/sh
-   pre-commit-msg-gen "$1"' > .git/hooks/prepare-commit-msg
+   prepare-commit-msg-gen "$1"' > .git/hooks/prepare-commit-msg
    chmod +x .git/hooks/prepare-commit-msg
    ```
 
