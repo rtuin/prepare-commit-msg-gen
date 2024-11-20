@@ -4,11 +4,11 @@ A tool that helps generate meaningful commit messages for your Git repositories 
 
 ## Installation
 
-### From PyPI (for users)
-You can install this package using pip:
+### From Homebrew (for users)
+You can install this package using Homebrew:
 
 ```bash
-pip install prepare-commit-msg-gen
+brew install rtuin/tools/prepare-commit-msg-gen
 ```
 
 ### Local Development Installation
