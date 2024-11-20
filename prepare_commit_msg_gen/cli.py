@@ -3,6 +3,7 @@ import sys
 import os
 import subprocess
 from typing import Optional
+from . import __version__
 
 # from langchain_core.schema import BaseChatModel
 from langchain_openai import ChatOpenAI
@@ -67,6 +68,13 @@ Diff:
 
 def main():
     """Main entry point for the pre-commit message generator."""
+    if len(sys.argv) > 1 and sys.argv[1] in ['--version', '-v']:
+        print("prepare-commit-msg-gen")
+        print(f"  Version {__version__}")
+        print("  https://github.com/rtuin/prepare-commit-msg-gen")
+        print("  Copyright (c) 2024 Richard Tuin")
+        return 0
+
     # The pre-commit hook receives the path to the commit message file as the first argument
     if len(sys.argv) < 2:
         print("Error: Expected commit message file path as argument", file=sys.stderr)
