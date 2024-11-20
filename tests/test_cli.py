@@ -3,18 +3,15 @@ from unittest.mock import patch, MagicMock
 import os
 import tempfile
 from prepare_commit_msg_gen.cli import get_staged_diff, generate_commit_message, main
+from langchain_core.messages import AIMessage
 
 @pytest.fixture
-def mock_openai_client():
-    mock_client = MagicMock()
-    mock_completion = MagicMock()
-    mock_completion.choices = [
-        MagicMock(message=MagicMock(content="feat(auth): add user authentication"))
-    ]
-    mock_client.chat.completions.create.return_value = mock_completion
-    
-    with patch('prepare_commit_msg_gen.cli.get_openai_client', return_value=mock_client):
-        yield mock_client
+def mock_llm():
+    mock = MagicMock()
+    mock.invoke.return_value = AIMessage(content="feat(auth): add user authentication")
+
+    with patch('prepare_commit_msg_gen.cli.get_llm_client', return_value=mock):
+        yield mock
 
 @pytest.fixture
 def temp_commit_msg_file():
@@ -36,18 +33,39 @@ def test_get_staged_diff_with_changes():
         diff = get_staged_diff()
         assert diff == mock_diff.decode('utf-8')
 
-def test_generate_commit_message_success(mock_openai_client):
+def test_get_llm_client_openai():
+    with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "openai",
+        "PREPARE_COMMIT_MSG_GEN_LLM_MODEL": "gpt-4o",
+        "OPENAI_API_KEY": "test-key"
+    }):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        from langchain_openai import ChatOpenAI
+
+        llm = get_llm_client()
+        assert isinstance(llm, ChatOpenAI)
+        assert llm.model_name == "gpt-4o"
+        assert llm.temperature == 0.1
+
+def test_get_llm_client_invalid_provider():
+    with patch.dict(os.environ, {"PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "invalid", "OPENAI_API_KEY": "test-key"}):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        with pytest.raises(ValueError) as exc_info:
+            get_llm_client()
+        assert str(exc_info.value) == "Unsupported LLM provider: invalid"
+
+def test_generate_commit_message_success(mock_llm):
     diff = 'diff --git a/auth.py b/auth.py\n+def authenticate_user():'
     message = generate_commit_message(diff)
     assert message == "feat(auth): add user authentication"
-    mock_openai_client.chat.completions.create.assert_called_once()
+    mock_llm.invoke.assert_called_once()
 
-def test_generate_commit_message_error(mock_openai_client):
-    mock_openai_client.chat.completions.create.side_effect = Exception("API Error")
+def test_generate_commit_message_error(mock_llm):
+    mock_llm.invoke.side_effect = Exception("API Error")
     message = generate_commit_message("some diff")
     assert message is None
 
-def test_main_success(mock_openai_client, temp_commit_msg_file):
+def test_main_success(mock_llm, temp_commit_msg_file):
     with patch('sys.argv', ['script', temp_commit_msg_file]), \
          patch('prepare_commit_msg_gen.cli.get_staged_diff') as mock_get_diff:
         mock_get_diff.return_value = "some diff"
@@ -77,17 +95,17 @@ def test_main_invalid_args():
             main()
         assert exc_info.value.code == 1
 
-def test_main_failed_message_generation(mock_openai_client, temp_commit_msg_file):
+def test_main_failed_message_generation(mock_llm, temp_commit_msg_file):
     with patch('sys.argv', ['script', temp_commit_msg_file]), \
          patch('prepare_commit_msg_gen.cli.get_staged_diff') as mock_get_diff:
         mock_get_diff.return_value = "some diff"
-        mock_openai_client.chat.completions.create.side_effect = Exception("API Error")
+        mock_llm.invoke.side_effect = Exception("API Error")
 
         with pytest.raises(SystemExit) as exc_info:
             main()
         assert exc_info.value.code == 1
 
-def test_main_nonexistent_commit_msg_file(mock_openai_client):
+def test_main_nonexistent_commit_msg_file(mock_llm):
     with patch('sys.argv', ['script', '/nonexistent/file']), \
          patch('prepare_commit_msg_gen.cli.get_staged_diff') as mock_get_diff:
         mock_get_diff.return_value = "some diff"

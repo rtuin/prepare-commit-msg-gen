@@ -10,6 +10,8 @@ packages = [{include = "prepare_commit_msg_gen"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 openai = "^1.54.5"
+langchain = "^0.3.7"
+langchain-openai = "^0.2.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"

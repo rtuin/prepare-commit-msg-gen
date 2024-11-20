@@ -2,17 +2,31 @@
 import sys
 import os
 import subprocess
-from openai import OpenAI
+from typing import Optional
 
-def get_openai_client():
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# from langchain_core.schema import BaseChatModel
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import SystemMessage, HumanMessage
 
-def get_staged_diff():
+def get_llm_client():
+    """Get the LLM client based on configuration."""
+    model_name = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_MODEL", "gpt-4o")
+    provider = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER", "openai").lower()
+
+    if provider == "openai":
+        return ChatOpenAI(
+            model=model_name,
+            temperature=0.1
+        )
+
+    raise ValueError(f"Unsupported LLM provider: {provider}")
+
+def get_staged_diff() -> str:
     result = subprocess.run(['git', 'diff', '--cached'], stdout=subprocess.PIPE)
     diff = result.stdout.decode('utf-8')
     return diff
 
-def generate_commit_message(diff):
+def generate_commit_message(diff: str) -> Optional[str]:
     prompt = f"""
 You are an expert software engineer and a helpful assistant that writes clear and concise Git commit messages following the Conventional Commits specification.
 
@@ -40,19 +54,13 @@ Diff:
     """
 
     try:
-        client = get_openai_client()
-        response = client.chat.completions.create(
-            model='gpt-4o',
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that writes Git commit messages."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=150,
-            n=1,
-            temperature=0.5,
-        )
-        message = response.choices[0].message.content.strip()
-        return message
+        llm = get_llm_client()
+        messages = [
+            SystemMessage(content="You are a helpful assistant that writes Git commit messages."),
+            HumanMessage(content=prompt)
+        ]
+        response = llm.invoke(messages)
+        return response.content.strip()
     except Exception as e:
         print(f"Error generating commit message: {e}")
         return None
