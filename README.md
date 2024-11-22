@@ -57,6 +57,23 @@ After installing the package, you need to set up the pre-commit hook in your Git
 
 Once installed and set up, the hook will automatically run every time you create a new commit. It will analyze your changes and suggest a meaningful commit message.
 
+## Configuration
+
+The tool can be configured using environment variables:
+
+### LLM Provider Configuration
+- `PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER`: Choose the LLM provider to use (default: "ollama")
+  - Supported values: "ollama", "openai"
+- `PREPARE_COMMIT_MSG_GEN_LLM_MODEL`: Specify the model to use
+  - For Ollama: defaults to "qwen2.5-coder:7b"
+  - For OpenAI: defaults to "gpt-4o"
+
+### Ollama-specific Configuration
+- `PREPARE_COMMIT_MSG_GEN_OLLAMA_BASE_URL`: Set the base URL for your Ollama instance (default: "http://localhost:11434")
+
+### OpenAI-specific Configuration
+- `OPENAI_API_KEY`: Your OpenAI API key (required when using OpenAI provider)
+
 ## Troubleshooting
 
 ### Hook Not Running
