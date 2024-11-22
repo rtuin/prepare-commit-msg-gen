@@ -57,6 +57,24 @@ After installing the package, you need to set up the pre-commit hook in your Git
 
 Once installed and set up, the hook will automatically run every time you create a new commit. It will analyze your changes and suggest a meaningful commit message.
 
+## Troubleshooting
+
+### Hook Not Running
+
+If the hook is not running when you make commits, ensure that:
+
+1. The hook is installed in the correct hooks directory. Git uses the directory specified by `core.hooksPath` configuration. By default, this is `.git/hooks/` in your repository. You can check your hooks path with:
+   ```bash
+   git config core.hooksPath
+   ```
+
+2. If you've configured a custom hooks path, make sure to install the hook in that directory instead of `.git/hooks/`.
+
+3. The hook file has executable permissions:
+   ```bash
+   chmod +x <hooks-path>/prepare-commit-msg
+   ```
+
 ## Development
 
 This project uses Poetry for dependency management. To set up a development environment:
