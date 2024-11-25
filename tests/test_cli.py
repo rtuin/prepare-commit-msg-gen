@@ -48,7 +48,9 @@ def test_get_llm_client_openai():
         assert llm.temperature == 0.1
 
 def test_get_llm_client_ollama_default():
-    with patch.dict(os.environ, {}):
+    with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "ollama",
+    }):
         from prepare_commit_msg_gen.cli import get_llm_client
         from langchain_ollama import ChatOllama
 
@@ -60,6 +62,7 @@ def test_get_llm_client_ollama_default():
 
 def test_get_llm_client_ollama_custom():
     with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "ollama",
         "PREPARE_COMMIT_MSG_GEN_LLM_MODEL": "llama2",
         "PREPARE_COMMIT_MSG_GEN_OLLAMA_BASE_URL": "http://custom-server:11434"
     }):
