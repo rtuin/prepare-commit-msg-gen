@@ -47,6 +47,31 @@ def test_get_llm_client_openai():
         assert llm.model_name == "gpt-4o"
         assert llm.temperature == 0.1
 
+def test_get_llm_client_ollama_default():
+    with patch.dict(os.environ, {}):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        from langchain_ollama import ChatOllama
+
+        llm = get_llm_client()
+        assert isinstance(llm, ChatOllama)
+        assert llm.model == "qwen2.5-coder:7b"
+        assert llm.temperature == 0.1
+        assert llm.base_url == "http://localhost:11434"
+
+def test_get_llm_client_ollama_custom():
+    with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_MODEL": "llama2",
+        "PREPARE_COMMIT_MSG_GEN_OLLAMA_BASE_URL": "http://custom-server:11434"
+    }):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        from langchain_ollama import ChatOllama
+
+        llm = get_llm_client()
+        assert isinstance(llm, ChatOllama)
+        assert llm.model == "llama2"
+        assert llm.temperature == 0.1
+        assert llm.base_url == "http://custom-server:11434"
+
 def test_get_llm_client_invalid_provider():
     with patch.dict(os.environ, {"PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "invalid", "OPENAI_API_KEY": "test-key"}):
         from prepare_commit_msg_gen.cli import get_llm_client

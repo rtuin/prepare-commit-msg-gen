@@ -12,6 +12,8 @@ python = "^3.11"
 openai = "^1.54.5"
 langchain = "^0.3.7"
 langchain-openai = "^0.2.9"
+langchain-ollama = "^0.2.0"
+ollama = "^0.4.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
