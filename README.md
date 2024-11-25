@@ -62,17 +62,21 @@ Once installed and set up, the hook will automatically run every time you create
 The tool can be configured using environment variables:
 
 ### LLM Provider Configuration
-- `PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER`: Choose the LLM provider to use (default: "ollama")
-  - Supported values: "ollama", "openai"
+- `PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER`: Choose the LLM provider to use (default: "anthropic")
+  - Supported values: "anthropic", "ollama", "openai"
 - `PREPARE_COMMIT_MSG_GEN_LLM_MODEL`: Specify the model to use
   - For Ollama: defaults to "qwen2.5-coder:7b"
   - For OpenAI: defaults to "gpt-4o"
+  - For Anthropic: defaults to "claude-3-5-sonnet-latest"
 
 ### Ollama-specific Configuration
 - `PREPARE_COMMIT_MSG_GEN_OLLAMA_BASE_URL`: Set the base URL for your Ollama instance (default: "http://localhost:11434")
 
 ### OpenAI-specific Configuration
 - `OPENAI_API_KEY`: Your OpenAI API key (required when using OpenAI provider)
+
+### Anthropic-specific Configuration
+- `ANTHROPIC_API_KEY`: Your Anthropic API key (required when using Anthropic provider)
 
 ## Troubleshooting
 

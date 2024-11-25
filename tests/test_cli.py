@@ -72,6 +72,33 @@ def test_get_llm_client_ollama_custom():
         assert llm.temperature == 0.1
         assert llm.base_url == "http://custom-server:11434"
 
+def test_get_llm_client_anthropic_default():
+    with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "anthropic",
+        "ANTHROPIC_API_KEY": "test-key"
+    }):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        from langchain_anthropic import ChatAnthropic
+
+        llm = get_llm_client()
+        assert isinstance(llm, ChatAnthropic)
+        assert llm.model == "claude-3-5-sonnet-latest"
+        assert llm.temperature == 0.1
+
+def test_get_llm_client_anthropic_custom():
+    with patch.dict(os.environ, {
+        "PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "anthropic",
+        "PREPARE_COMMIT_MSG_GEN_LLM_MODEL": "claude-3-opus-20240229",
+        "ANTHROPIC_API_KEY": "test-key"
+    }):
+        from prepare_commit_msg_gen.cli import get_llm_client
+        from langchain_anthropic import ChatAnthropic
+
+        llm = get_llm_client()
+        assert isinstance(llm, ChatAnthropic)
+        assert llm.model == "claude-3-opus-20240229"
+        assert llm.temperature == 0.1
+
 def test_get_llm_client_invalid_provider():
     with patch.dict(os.environ, {"PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER": "invalid", "OPENAI_API_KEY": "test-key"}):
         from prepare_commit_msg_gen.cli import get_llm_client

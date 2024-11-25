@@ -8,19 +8,20 @@ from . import __version__
 # from langchain_core.schema import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
+from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage, HumanMessage
 
 def get_llm_client():
     """Get the LLM client based on configuration."""
-    provider = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER", "ollama").lower()
-    
+    provider = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_PROVIDER", "anthropic").lower()
+
     if provider == "openai":
         model_name = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_MODEL", "gpt-4o")
         return ChatOpenAI(
             model=model_name,
             temperature=0.1
         )
-    
+
     if provider == "ollama":
         model_name = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_MODEL", "qwen2.5-coder:7b")
         base_url = os.getenv("PREPARE_COMMIT_MSG_GEN_OLLAMA_BASE_URL", "http://localhost:11434")
@@ -28,6 +29,13 @@ def get_llm_client():
             model=model_name,
             temperature=0.1,
             base_url=base_url
+        )
+
+    if provider == "anthropic":
+        model_name = os.getenv("PREPARE_COMMIT_MSG_GEN_LLM_MODEL", "claude-3-5-sonnet-latest")
+        return ChatAnthropic(
+            model=model_name,
+            temperature=0.1
         )
 
     raise ValueError(f"Unsupported LLM provider: {provider}")
