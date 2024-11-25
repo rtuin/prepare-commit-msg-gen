@@ -11,41 +11,16 @@ You can install this package using Homebrew:
 brew install rtuin/tools/prepare-commit-msg-gen
 ```
 
-### Local Development Installation
-To install the package locally for development:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/rtuin/prepare-commit-msg-gen.git
-   cd prepare-commit-msg-gen
-   ```
-
-2. Install Poetry if you haven't already: https://python-poetry.org/docs/#installation
-
-3. Install the package in editable mode:
-   ```bash
-   poetry install
-   poetry build
-   pip install -e .
-   ```
-
-4. Test the package:
-   ```bash
-   touch test-message.txt
-   prepare-commit-msg-gen test-message.txt
-   ```
-
-
 ## Setting up the Git Hook
 
-After installing the package, you need to set up the pre-commit hook in your Git repository:
+After installing the package, you need to set up the prepare-commit-msg hook in your Git repository:
 
 1. Navigate to your Git repository:
    ```bash
    cd your-repository
    ```
 
-2. Create a new pre-commit hook:
+2. Create a new prepare-commit-msg hook:
    ```bash
    mkdir -p .git/hooks
    echo '#!/bin/sh
@@ -98,16 +73,34 @@ If the hook is not running when you make commits, ensure that:
 
 ## Development
 
-This project uses Poetry for dependency management. To set up a development environment:
+### Local Development Installation (for development)
+To install the package locally for development:
 
-1. Clone the repository
-2. Install Poetry if you haven't already: https://python-poetry.org/docs/#installation
-3. Install dependencies:
+1. Clone the repository:
    ```bash
-   poetry install
+   git clone https://github.com/rtuin/prepare-commit-msg-gen.git
+   cd prepare-commit-msg-gen
    ```
 
-4. Run tests:
+2. Install Poetry if you haven't already: https://python-poetry.org/docs/#installation
+
+3. Install the package in editable mode:
+   ```bash
+   poetry install
+   poetry build
+   pip install -e .
+   ```
+
+4. Test the package:
+   ```bash
+   touch test-message.txt
+   prepare-commit-msg-gen test-message.txt
+   ```
+
+
+### Running Tests
+
+To run tests, use:
    ```bash
    poetry run pytest
    ```
