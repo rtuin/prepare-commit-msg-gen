@@ -612,9 +612,9 @@ numpy==1.26.4 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:edd8b5fe47dab091176d21bb6de568acdd906d1887a4584a15a9a96a1dca06ef \
     --hash=sha256:f870204a840a60da0b12273ef34f7051e98c3b5961b61b0c2c1be6dfd64fbcd3 \
     --hash=sha256:ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f
-ollama==0.4.0 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:2992242a4639e18e50254b87c45314813b61912c19b7635a2e93937b58f70c46 \
-    --hash=sha256:b47df2619503677c18bcee85ba76269270ff61eae727750d2a093413fc30cde8
+ollama==0.4.1 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:8c6b5e7ff80dd0b8692150b03359f60bac7ca162b088c604069409142a684ad3 \
+    --hash=sha256:b6fb16aa5a3652633e1716acb12cf2f44aa18beb229329e46a0302734822dfad
 openai==1.54.5 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:2aab4f9755a3e1e04d8a45ac1f4ce7b6948bab76646020c6386256d7e5cbb7e0 \
     --hash=sha256:f55a4450f38501814b53e76311ed7845a6f7f35bab46d0fb2a3728035d7a72d8
